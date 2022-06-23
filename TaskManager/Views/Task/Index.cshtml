@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Task>
+@{
+	ViewData["Title"] = "Tasks";
+}
+
+<h1>Tasks</h1>
+<a asp-controller="Task" asp-action="Create">Create new task</a>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Title</th>
+			<th scope="col">Status</th>
+			<th scope="col">Author</th>
+			<th scope="col">Performer</th>
+			<th scope="col">Created</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			@foreach (var task in Model)
+			{
+				<th scope="row">@task.ID</th>
+				<td>
+					<a asp-action="Details" asp-controller="Task" asp-route-id="@task.ID">@task.Title</a>
+				</td>
+				<td>@task.Status</td>
+				<td>@task.Author</td>
+				<td>@task.Performer</td>
+				<td>@task.Created</td>
+			}
+		</tr>
+	</tbody>
+</table>
+
+

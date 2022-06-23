@@ -1,0 +1,40 @@
+﻿@model TaskViewModel
+@{
+	ViewData["Title"] = "Create new task";
+}
+
+<form asp-controller="Task" asp-action="Create" method="post">
+	<div class="form-group">
+		<input asp-for="Title" type="text" class="form-control" placeholder="title">
+	</div>
+	<div class="form-group">
+		<label asp-for="Description">Description</label>
+		<textarea asp-for="Description" class="form-control" rows="3"></textarea>
+	</div>
+	<div class="form-group">
+		<label asp-for="Status">Status</label>
+		<input asp-for="Status" type="text" class="form-control">
+	</div>
+	<div class="form-group">
+		<label asp-for="Performer">Performer</label>
+		<select asp-for="Performer" class="form-control" >
+			<option></option>
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="exampleFormControlSelect2">Example multiple select</label>
+		<select multiple class="form-control" id="exampleFormControlSelect2">
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+
+</form>
