@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskManager.Models
 {
-    public class Mark
+    public class Tag
     {
-
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public DateTime Created { get; set; }
     }
 }

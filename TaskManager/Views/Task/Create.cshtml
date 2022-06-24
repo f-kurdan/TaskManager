@@ -19,21 +19,19 @@
 		<label asp-for="Performer">Performer</label>
 		<select asp-for="Performer" class="form-control" >
 			<option></option>
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
+			@foreach (var performer in Model.Performers)
+			{
+				<option>@performer</option>
+			}
 		</select>
 	</div>
 	<div class="form-group">
-		<label for="exampleFormControlSelect2">Example multiple select</label>
+		<label asp-for="Tags">Tags</label>
 		<select multiple class="form-control" id="exampleFormControlSelect2">
-			<option>1</option>
-			<option>2</option>
-			<option>3</option>
-			<option>4</option>
-			<option>5</option>
+			@foreach (var performer in Model.Performers)
+			{
+				<option>@performer</option>
+			}
 		</select>
 	</div>
 

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using TaskManager.Models;
 
 namespace TaskManager.ViewModels
 {
@@ -26,7 +22,7 @@ namespace TaskManager.ViewModels
 
         public List<User> Performers { get; set; }
 
-        public List<Mark> Marks { get; set; }
+        public List<Tag> Tags { get; set; }
 
 
     }
