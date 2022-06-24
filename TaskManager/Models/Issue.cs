@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 namespace TaskManager.Models
-{
+{//this class is called 'Issue' in order to avoid confusion with System.Threading.Tasks.Task class
     public class Issue
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
