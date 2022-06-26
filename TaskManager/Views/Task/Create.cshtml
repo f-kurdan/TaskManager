@@ -3,9 +3,14 @@
 	ViewData["Title"] = "Create new task";
 }
 
+<h1>Creating a task</h1>
 <form asp-controller="Task" asp-action="Create" method="post">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="Created" value="" />
+	<input type="hidden" asp-for="Author" value="@User" />
 	<div class="form-group">
-		<input asp-for="Title" type="text" class="form-control" placeholder="title">
+		<input asp-for="Title" type="text" class="form-control" placeholder="Title">
+		 <span asp-validation-for="Title" class="text-danger"></span>
 	</div>
 	<div class="form-group">
 		<label asp-for="Description">Description</label>
@@ -17,22 +22,24 @@
 	</div>
 	<div class="form-group">
 		<label asp-for="Performer">Performer</label>
-		<select asp-for="Performer" class="form-control" >
-			<option></option>
-			@foreach (var performer in Model.Performers)
-			{
-				<option>@performer</option>
-			}
+		<select asp-for="Performer" class="form-control" />
+		<option></option>
+		@foreach (var performer in Model.Performers)
+		{
+			<option>@performer</option>
+		}
 		</select>
 	</div>
 	<div class="form-group">
 		<label asp-for="Tags">Tags</label>
-		<select multiple class="form-control" id="exampleFormControlSelect2">
-			@foreach (var performer in Model.Performers)
-			{
-				<option>@performer</option>
-			}
+		<select multiple class="form-control" />
+		@foreach (var tag in Model.Tags)
+		{
+			<option>@tag</option>
+		}
 		</select>
 	</div>
-
+	<div class="form-group">
+		<input type="submit" value="Create" class="btn btn-primary" />
+	</div>
 </form>

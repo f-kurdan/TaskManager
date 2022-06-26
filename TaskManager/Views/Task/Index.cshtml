@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TaskManager.Models.Issue>
+﻿@model TaskViewModel
 @{
 	ViewData["Title"] = "Tasks";
 }
@@ -18,7 +18,7 @@
 	</thead>
 	<tbody>
 		<tr>
-			@foreach (var task in Model)
+			@foreach (var task in Model.Tasks)
 			{
 				<th scope="row">@task.ID</th>
 				<td>
