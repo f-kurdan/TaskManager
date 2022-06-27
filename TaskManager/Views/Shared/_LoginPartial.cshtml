@@ -1,0 +1,12 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+	<a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-primary m-1"
+   role="button" aria-pressed="true">Logout</a>
+}
+else
+{
+	<a asp-controller="Auth" asp-action="Login" class="btn btn-outline-primary m-1"
+   role="button" aria-pressed="true">Login</a>
+	<a asp-controller="Auth" asp-action="Register"
+   class="btn btn-outline-secondary m-1" role="button" aria-pressed="true">Register</a>
+}
