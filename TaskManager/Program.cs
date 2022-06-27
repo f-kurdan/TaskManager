@@ -23,9 +23,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
-builder.Services.AddMailKit(options => options.UseMailKit(builder.Configuration.GetSection("Email").Get<MailKitOptions>()));
-
 builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
+
+builder.Services.AddMailKit(options => options.UseMailKit(builder.Configuration.GetSection("Email").Get<MailKitOptions>()));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -43,6 +43,7 @@ if (!app.Environment.IsDevelopment())
 else
 {
 	app.UseDeveloperExceptionPage();
+
 	app.UseMigrationsEndPoint();
 }
 
@@ -76,6 +77,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();

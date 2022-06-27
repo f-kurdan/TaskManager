@@ -4,7 +4,10 @@
 }
 
 <h1>Tasks</h1>
-<a asp-controller="Task" asp-action="Create">Create new task</a>
+@if (User.Identity.IsAuthenticated)
+{
+	<a class="btn btn-primary" asp-controller="Task" asp-action="Create">Create new task</a>
+}
 <table class="table table-striped">
 	<thead>
 		<tr>

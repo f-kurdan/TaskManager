@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Data;
 using TaskManager.Models;
@@ -24,6 +25,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet]
+		[Authorize]
         public IActionResult Create()
         {
             var performers = _context.Users
@@ -35,6 +37,7 @@ namespace TaskManager.Controllers
 
             var vm = new TaskViewModel
             {
+                Author = HttpContext.User.Identity.Name,
                 Statuses = statuses,
                 Performers = performers,
                 Tags = tags
@@ -43,12 +46,13 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(TaskViewModel vm)
         {
             var task = new Models.Task
             {
                 Title = vm.Title,
-                Author = HttpContext.User.Identity.Name,
+                Author = vm.Author,
                 Performer = vm.Performer,
                 Created = DateTime.Now,
                 Description = vm.Description,
