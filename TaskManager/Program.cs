@@ -23,6 +23,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 	.AddEntityFrameworkStores<AppDbContext>()
 	.AddDefaultTokenProviders();
 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+   opt.TokenLifespan = TimeSpan.FromHours(2));
+
 builder.Services.ConfigureApplicationCookie(options => options.LoginPath = "/Auth/Login");
 
 builder.Services.AddMailKit(options => options.UseMailKit(builder.Configuration.GetSection("Email").Get<MailKitOptions>()));
