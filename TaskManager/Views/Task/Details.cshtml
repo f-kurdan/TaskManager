@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model TaskViewModel
 @{
+	ViewData["Title"] = "Details";
 }
+
+<h1>@Model.Title</h1>
+<div class="row mt-5 p-5 shadow bg-white">
+	<div class="col-12 col-md-8 order-2 order-md-1">
+		<div class="lead fw-normal mb-4">
+			@Model.Description
+		</div>
+	</div>
+	<div class="col-12 col-md-4 border-start px-3 order-1 order-md-2 mb-3 mb-md-0">
+		<div class="mb-2">
+			<span class="me-1 badge bg-danger text-white">@Model.Status</span>
+			@if (Model.Tags != null)
+			{
+				@foreach (var tag in Model.Tags)
+				{
+					<span class="me-1 badge bg-info text-white">@tag.Title</span>
+				}
+			}
+		</div>
+		<div class="d-flex flex-wrap mb-3">
+			<span class="text-muted me-2">Author</span>
+			<span>@Model.Author</span>
+		</div>
+		<div class="d-flex flex-wrap mb-3">
+			<span class="text-muted me-2">Performer</span>
+			<span>@Model.Performer</span>
+		</div>
+		<div class="d-flex flex-wrap mb-3">
+			<span class="text-muted me-2">Created</span>
+			<span>@Model.CreationDate</span>
+		</div>
+		<div class="d-flex flex-wrap">
+			<a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary me-1">Edit</a>
+			<a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-danger ms-1">Delete</a>
+		</div>
+	</div>
+</div>

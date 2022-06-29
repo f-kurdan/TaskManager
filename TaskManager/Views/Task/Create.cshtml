@@ -7,8 +7,8 @@
 <form asp-controller="Task" asp-action="Create" method="post">
 	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 	<input type="hidden" asp-for="CreationDate" value="" />
-	<input type="hidden" asp-for="Author" value="@User" />
-	<div class="form-group">
+	<input type="hidden" asp-for="Author" value="" />
+	<div class="form-group my-2">
 		<input asp-for="Title" type="text" class="form-control" placeholder="Title">
 		<span asp-validation-for="Title" class="text-danger"></span>
 	</div>
@@ -17,12 +17,12 @@
 		<textarea asp-for="Description" class="form-control" rows="3"></textarea>
 		<span asp-validation-for="Description" class="text-danger"></span>
 	</div>
-	<div class="form-group">
+	<div class="form-group my-2">
 		<label asp-for="Status">Status</label>
 		<input asp-for="Status" type="text" class="form-control">
 		<span asp-validation-for="Status" class="text-danger"></span>
 	</div>
-	<div class="form-group">
+	<div class="form-group my-2">
 		<label asp-for="Performer">Performer</label>
 		<select asp-for="Performer" class="form-control">
 			<option></option>
@@ -33,7 +33,7 @@
 		</select>
 		<span asp-validation-for="Performer" class="text-danger"></span>
 	</div>
-	<div class="form-group">
+	<div class="form-group my-2">
 		<label asp-for="Tags">Tags</label>
 		<select asp-for="Tags" multiple class="form-control">
 			@foreach (var tag in Model.Tags)
@@ -43,7 +43,7 @@
 		</select>
 		<span asp-validation-for="Tags" class="text-danger"></span>
 	</div>
-	<div class="form-group">
+	<div class="form-group my-2">
 		<input type="submit" value="Create" class="btn btn-primary" />
 	</div>
 </form>

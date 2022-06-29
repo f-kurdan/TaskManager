@@ -1,3 +1,53 @@
-﻿
+﻿@model TaskViewModel
 @{
+	ViewData["Title"] = "Edit task";
 }
+
+<h1>Edit task</h1>
+<form asp-controller="Task" asp-action="Edit" method="post">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="ID" value="" />
+	<input type="hidden" asp-for="CreationDate" value="" />
+	<input type="hidden" asp-for="Author" value="" />
+	<div class="form-group my-2">
+		<input asp-for="Title" type="text" class="form-control" placeholder="Title">
+		<span asp-validation-for="Title" class="text-danger"></span>
+	</div>
+	<div class="form-group my-2">
+		<label asp-for="Description">Description</label>
+		<textarea asp-for="Description" class="form-control" rows="3"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+	</div>
+	<div class="form-group my-2">
+		<label asp-for="Status">Status</label>
+		<input asp-for="Status" type="text" class="form-control">
+		<span asp-validation-for="Status" class="text-danger"></span>
+	</div>
+	<div class="form-group my-2">
+		<label asp-for="Performer">Performer</label>
+		<select asp-for="Performer" class="form-control">
+			<option></option>
+			@foreach (var performer in Model.Performers)
+			{
+				<option>@performer</option>
+			}
+		</select>
+		<span asp-validation-for="Performer" class="text-danger"></span>
+	</div>
+	<div class="form-group my-2">
+		<label asp-for="Tags">Tags</label>
+		<select asp-for="Tags" multiple class="form-control">
+			@if (Model.Tags != null)
+			{
+				@foreach (var tag in Model.Tags)
+				{
+					<option>@tag</option>
+				}
+			}
+		</select>
+		<span asp-validation-for="Tags" class="text-danger"></span>
+	</div>
+	<div class="form-group my-2">
+		<input type="submit" value="Edit" class="btn btn-primary" />
+	</div>
+</form>

@@ -36,7 +36,5 @@ namespace TaskManager.ViewModels
         public List<string> Performers { get; set; }
 
         public List<Tag> Tags { get; set; }
-
-
     }
 }
