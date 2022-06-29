@@ -1,98 +1,145 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using NETCore.MailKit.Core;
 using TaskManager.Data;
 using TaskManager.ViewModels;
 
 namespace TaskManager.Controllers
 {
-	public class AuthController : Controller
-	{
-		private readonly AppDbContext _context;
-		private readonly UserManager<IdentityUser> _userManager;
-		private readonly SignInManager<IdentityUser> _signInManager;
-		private readonly IEmailService _emailService;
+    public class AuthController : Controller
+    {
+        private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailService _emailService;
 
-		public AuthController(UserManager<IdentityUser> userManager,
-			SignInManager<IdentityUser> signInManager,
-			IEmailService emailService)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_emailService = emailService;
-		}
+        public AuthController(UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IEmailService emailService)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _emailService = emailService;
+        }
 
-		[HttpGet]
-		public IActionResult Login() => View();
+        [HttpGet]
+        public IActionResult Login() => View();
 
-		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel vm)
-		{
-			if (!ModelState.IsValid) return View(vm);
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel vm)
+        {
+            if (!ModelState.IsValid) return View(vm);
 
-			var user = await _userManager.FindByNameAsync(vm.UserName);
-			if (user != null)
-			{
-				var signInResult = await _signInManager
-						.PasswordSignInAsync(user, vm.Password, vm.RememberMe, false);
+            var user = await _userManager.FindByNameAsync(vm.UserName);
+            if (user != null)
+            {
+                var signInResult = await _signInManager
+                        .PasswordSignInAsync(user, vm.Password, vm.RememberMe, false);
+                if (signInResult.Succeeded)
+                    return RedirectToAction(nameof(Index), "Home");
+            }
+            return View(vm);
+        }
 
-				if (signInResult.Succeeded)
-					return RedirectToAction("Index", "Home");
-			}
-			return View(vm);
-		}
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Index), "Home");
+        }
 
-		[Authorize]
-		public async Task<IActionResult> Logout()
-		{
-			await _signInManager.SignOutAsync();
-			return RedirectToAction("Index", "Home");
-		}
+        [HttpGet]
+        public IActionResult Register() => View();
 
-		[HttpGet]
-		public IActionResult Register() => View();
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel vm)
+        {
+            if (!ModelState.IsValid) return View(vm);
 
-		[HttpPost]
-		public async Task<IActionResult> Register(RegisterViewModel vm)
-		{
-			if (!ModelState.IsValid) return View(vm);
+            var user = new IdentityUser
+            {
+                UserName = vm.UserName,
+                Email = vm.Email
+            };
 
-			var user = new IdentityUser
-			{
-				UserName = vm.UserName,
-				Email = vm.Email
-			};
+            var result = await _userManager.CreateAsync(user, vm.Password);
+            if (result.Succeeded)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callback = Url.Action(nameof(VerifyEmail), "Auth", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
 
-			var result = await _userManager.CreateAsync(user, vm.Password);
+                await _emailService.SendAsync("test@test.com", "email verification",
+                    $"<a href=\"{callback}\">Click on this link to verify email<a>", true);
 
-			if (result.Succeeded)
-			{
-				var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                return RedirectToAction(nameof(EmailVerification));
+            }
+            return View(vm);
+        }
 
-				var link = Url.Action(nameof(VerifyEmail), "Auth", new { userId = user.Id, code }, Request.Scheme, Request.Host.ToString());
+        public IActionResult EmailVerification() => View();
 
-				await _emailService.SendAsync("test@test.com", "email verification",
-					$"<a href=\"{link}\">Click on this link to verify email<a>", true);
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
 
-				return RedirectToAction("EmailVerification");
-			}
-			return View(vm);
-		}
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+                return View();
+            return BadRequest();
+        }
 
-		public IActionResult EmailVerification() => View();
+        [HttpGet]
+        public IActionResult ForgetPassword() => View();
 
-		public async Task<IActionResult> VerifyEmail(string userId, string code)
-		{
-			var user = await _userManager.FindByIdAsync(userId);
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetViewModel vm)
+        {
+            if (!ModelState.IsValid) return View(vm);
 
-			if (user == null) return BadRequest();
+            var user = await _userManager.FindByEmailAsync(vm.Email);
+            if (user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callback = Url.Action(nameof(ResetPassword), "Auth", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
 
-			var result = await _userManager.ConfirmEmailAsync(user, code);
+                await _emailService.SendAsync("test@test.com", "Password reset",
+                    $"<a href=\"{callback}\">Click on this link to create new password<a>", true);
 
-			if (result.Succeeded)
-				return View();
-			return BadRequest();
-		}
-	}
+                return View();
+            }
+            return BadRequest();
+        }
+
+        public IActionResult ForgetPasswordConfirmation() => View();
+
+        [HttpGet]
+        public IActionResult ResetPassword(string userId, string token)
+        {
+            var model = new ResetViewModel { UserID = userId, Token = token };
+            return View(model);
+        }
+
+        public async Task<IActionResult> ResetPassword(ResetViewModel vm)
+        {
+            var user = await _userManager.FindByIdAsync(vm.UserID);
+            if (user == null)
+                return BadRequest();
+
+            var result = await _userManager.ResetPasswordAsync(user, vm.Token, vm.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return View();
+            }
+            return RedirectToAction(nameof(ResetPasswordConfirmation));
+        }
+
+        public IActionResult ResetPasswordConfirmation() => View();
+    }
 }
