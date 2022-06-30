@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using NETCore.MailKit.Core;
 using TaskManager.Data;
-using TaskManager.ViewModels;
+using TaskManager.ViewModels.AuthViewModels;
 
 namespace TaskManager.Controllers
 {

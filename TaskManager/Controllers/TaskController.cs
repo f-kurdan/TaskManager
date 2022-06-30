@@ -16,24 +16,22 @@ namespace TaskManager.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var tasks = _context.Tasks.AsNoTracking().ToList();
-            var vm = new TaskViewModel { Tasks = tasks };
-
-            return View(vm);
+            var tasks = await _context.Tasks.AsNoTracking().ToListAsync();
+            return View(new TaskViewModel { Tasks = tasks });
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var performers = _context.Users
+            var performers = await _context.Users
                 .AsNoTracking()
                 .Select(u => u.ToString())
-                .ToList();
-            var tags = _context.Tags.AsNoTracking().ToList();
-            var statuses = _context.Statuses.AsNoTracking().ToList();
+                .ToListAsync();
+            var tags = await _context.Tags.AsNoTracking().ToListAsync();
+            var statuses = await _context.Statuses.AsNoTracking().ToListAsync();
 
             var vm = new TaskViewModel
             {
@@ -87,6 +85,7 @@ namespace TaskManager.Controllers
             return View(vm);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -101,6 +100,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
 
@@ -134,6 +134,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(TaskViewModel vm)
         {
             var task = new Models.Task
