@@ -13,5 +13,7 @@ namespace TaskManager.ViewModels.AuthViewModels
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
+
+        public bool SignInFailed { get; set; } = false;
     }
 }

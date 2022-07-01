@@ -34,8 +34,20 @@
 			<span>@Model.CreationDate</span>
 		</div>
 		<div class="d-flex flex-wrap">
-			<a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-outline-primary me-1">Edit</a>
-			<a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-outline-danger ms-1">Delete</a>
+			@if (User.Identity.IsAuthenticated)
+			{
+
+				<a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-outline-primary me-1">Edit</a>
+				<a asp-action="Delete" asp-route-id="@Model.ID" class="btn btn-outline-danger ms-1">Delete</a>
+			}
+			else
+			{
+				<a class="btn btn-outline-primary mx-1" asp-controller="Auth" asp-action="Login">Edit</a>
+				<a class="btn btn-outline-danger ms-1" asp-controller="Auth" asp-action="Login">Delete</a>
+			}
 		</div>
 	</div>
+</div>
+<div>
+	<a asp-action="Index" class="btn btn-outline-secondary my-4">Back to List</a>
 </div>

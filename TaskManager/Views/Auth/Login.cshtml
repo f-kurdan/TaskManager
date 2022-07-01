@@ -2,6 +2,14 @@
 @{
 	ViewBag.Title = "Log In";
 }
+@if (Model != null && Model.SignInFailed)
+{
+	<div class="d-flex align-items-center justify-content-center">
+		<div class="alert alert-danger shadow-sm w-50 d-flex align-items-center justify-content-center" role="alert">
+			It seems that incorrect username or password entered. Please try again =^ᴥ^=
+		</div>
+	</div>
+}
 <h1 class="d-flex align-items-center justify-content-center mx-3">Login</h1>
 <div class="d-flex align-items-center justify-content-center">
 	<form asp-controller="Auth" asp-action="Login" method="post">
@@ -22,8 +30,10 @@
 			<label asp-for="RememberMe" class="form-check-label">Remember Me</label>
 		</div>
 		<div class="my-0.5">
-			<button type="submit" class="btn btn-primary me-3">Submit</button>
-			<a class="ms-3" asp-controller="Auth" asp-action="ForgetPassword">Forgot password?</a>
+			<button type="submit" class="btn btn-outline-primary me-3">Submit</button>
+			<a class="btn btn-outline-secondary ms-3" asp-controller="Auth" asp-action="ForgetPassword">
+				Forgot password?
+			</a>
 		</div>
 	</form>
 </div>

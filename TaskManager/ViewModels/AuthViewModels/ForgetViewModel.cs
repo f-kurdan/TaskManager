@@ -7,5 +7,9 @@ namespace TaskManager.ViewModels.AuthViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        public bool IsEmailSend { get; set; } = false;
+
+        public bool IsUserVerified { get; set; } = true;
     }
 }

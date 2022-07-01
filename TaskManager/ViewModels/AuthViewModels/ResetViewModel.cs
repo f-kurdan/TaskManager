@@ -5,8 +5,6 @@ namespace TaskManager.ViewModels.AuthViewModels
     public class ResetViewModel
     {
         public string UserID { get; set; }
-
-        public string Email { get; set; }
         public string Token { get; set; }
 
         [Required]
@@ -16,5 +14,7 @@ namespace TaskManager.ViewModels.AuthViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords don't match.")]
         public string ConfirmPassword { get; set; }
+
+        public bool IsPasswordReset { get; set; } = false;
     }
 }

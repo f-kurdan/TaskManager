@@ -40,6 +40,7 @@ namespace TaskManager.Controllers
                 if (signInResult.Succeeded)
                     return RedirectToAction(nameof(Index), "Home");
             }
+            vm.SignInFailed = true;
             return View(vm);
         }
 
@@ -72,8 +73,7 @@ namespace TaskManager.Controllers
 
                 await _emailService.SendAsync("test@test.com", "email verification",
                     $"<a href=\"{callback}\">Click on this link to verify email<a>", true);
-
-                return RedirectToAction(nameof(EmailVerification));
+                vm.IsEmailSent = true;
             }
             return View(vm);
         }
@@ -108,9 +108,11 @@ namespace TaskManager.Controllers
                 await _emailService.SendAsync("test@test.com", "Password reset",
                     $"<a href=\"{callback}\">Click on this link to create new password<a>", true);
 
-                return View();
+                vm.IsEmailSend = true;
+                return View(vm);
             }
-            return BadRequest();
+            vm.IsUserVerified = false;
+            return (View(vm));
         }
 
         public IActionResult ForgetPasswordConfirmation() => View();
@@ -122,6 +124,7 @@ namespace TaskManager.Controllers
             return View(model);
         }
 
+		[HttpPost]
         public async Task<IActionResult> ResetPassword(ResetViewModel vm)
         {
             var user = await _userManager.FindByIdAsync(vm.UserID);
@@ -137,7 +140,8 @@ namespace TaskManager.Controllers
                 }
                 return View();
             }
-            return RedirectToAction(nameof(ResetPasswordConfirmation));
+            vm.IsPasswordReset = true;
+            return View(vm);
         }
 
         public IActionResult ResetPasswordConfirmation() => View();

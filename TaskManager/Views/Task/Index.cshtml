@@ -8,6 +8,10 @@
 {
 	<a class="btn btn-outline-primary" asp-controller="Task" asp-action="Create">Create new task</a>
 }
+else
+{
+	<a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Create new status</a>
+}
 <table class="table table-borderless table-striped mt-5 bg-white">
 	<thead>
 		<tr>
@@ -30,11 +34,16 @@
 				<td>@task.Performer</td>
 				<td>@task.Created</td>
 				<td class="d-flex flex-wrap">
-					<a asp-action="Details" asp-route-id="@task.ID" class="btn btn-outline-info text-white mx-1">Details</a>
+					<a asp-action="Details" asp-route-id="@task.ID" class="btn btn-outline-info mx-1">Details</a>
 					@if (User.Identity.IsAuthenticated)
 					{
-						<a asp-action="Edit" asp-route-id="@task.ID" class="btn btn-outline-primary mx-1">Edit</a>
-						<a asp-action="Delete" asp-route-id="@task.ID" class="btn btn-outline-danger ms-1">Delete</a>
+						<a class="btn btn-outline-primary mx-1" asp-action="Edit" asp-route-id="@task.ID">Edit</a>
+						<a class="btn btn-outline-danger ms-1" asp-action="Delete" asp-route-id="@task.ID">Delete</a>
+					}
+					else
+					{
+						<a class="btn btn-outline-primary mx-1" asp-controller="Auth" asp-action="Login">Edit</a>
+						<a class="btn btn-outline-danger ms-1" asp-controller="Auth" asp-action="Login">Delete</a>
 					}
 				</td>
 			</tr>

@@ -22,5 +22,7 @@ namespace TaskManager.ViewModels.AuthViewModels
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords don't match")]
         public string ConfirmPassword { get; set; }
+
+        public bool IsEmailSent { get; set; } = false;
     }
 }
