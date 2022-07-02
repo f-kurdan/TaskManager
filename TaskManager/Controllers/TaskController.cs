@@ -93,7 +93,7 @@ namespace TaskManager.Controllers
             var task = await _context.Tasks.FindAsync(id);
             if (task == null) return NotFound();
 
-            _context.Remove(task);
+            _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -116,6 +116,7 @@ namespace TaskManager.Controllers
             var tags = _context.Tags.AsNoTracking().ToList();
             var statuses = _context.Statuses.AsNoTracking().ToList();
 
+
             var vm = new TaskViewModel
             {
                 ID = task.ID,
@@ -125,7 +126,7 @@ namespace TaskManager.Controllers
                 Author = task.Author,
                 Performer = task.Performer,
                 CreationDate = task.Created,
-                Tags = task.Tags,
+                Tags = tags,
                 Statuses = statuses,
                 Performers = performers,
             };
@@ -149,7 +150,7 @@ namespace TaskManager.Controllers
                 Tags = vm.Tags
             };
 
-            _context.Update(task);
+            _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new { id = task.ID });

@@ -15,12 +15,24 @@ else
 <table class="table table-borderless table-striped mt-5 bg-white">
 	<thead>
 		<tr>
-			<th scope="col">ID</th>
-			<th scope="col">Title</th>
-			<th scope="col">Status</th>
-			<th scope="col">Author</th>
-			<th scope="col">Performer</th>
-			<th scope="col">Created</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.ID)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.Title)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.Status)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.Author)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.Performer)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.CreationDate)
+			</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,11 +40,21 @@ else
 		{
 			<tr>
 				<th scope="row">@task.ID</th>
-				<td>@task.Title</td>
-				<td>@task.Status</td>
-				<td>@task.Author</td>
-				<td>@task.Performer</td>
-				<td>@task.Created</td>
+				<td>
+					@Html.DisplayFor(modelItem => task.Title)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => task.Status)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => task.Author)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => task.Performer)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => task.Created)
+					</td>
 				<td class="d-flex flex-wrap">
 					<a asp-action="Details" asp-route-id="@task.ID" class="btn btn-outline-info mx-1">Details</a>
 					@if (User.Identity.IsAuthenticated)

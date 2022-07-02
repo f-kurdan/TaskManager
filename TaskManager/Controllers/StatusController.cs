@@ -74,7 +74,7 @@ namespace TaskManager.Controllers
                 Created = vm.Created
             };
 
-            _context.Update(status);
+            _context.Statuses.Update(status);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -88,7 +88,7 @@ namespace TaskManager.Controllers
             var status = await _context.Statuses.FindAsync(id);
             if (status == null) return NotFound();
 
-            _context.Remove(status);
+            _context.Statuses.Remove(status);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

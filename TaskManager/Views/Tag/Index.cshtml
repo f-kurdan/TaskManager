@@ -4,10 +4,10 @@
 	ViewData["Title"] = "Statuses";
 }
 
-<h1>Statuses</h1>
+<h1>Tags</h1>
 @if (User.Identity.IsAuthenticated)
 {
-	<a class="btn btn-outline-primary" asp-controller="Status" asp-action="Create">Create new tag</a>
+	<a class="btn btn-outline-primary" asp-controller="Tag" asp-action="Create">Create new tag</a>
 }
 else
 {
