@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using NETCore.MailKit.Core;
 using TaskManager.Data;
 using TaskManager.ViewModels.AuthViewModels;
@@ -117,7 +117,7 @@ namespace TaskManager.Controllers
             return View(model);
         }
 
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetViewModel vm)
         {
             var user = await _userManager.FindByIdAsync(vm.UserID);

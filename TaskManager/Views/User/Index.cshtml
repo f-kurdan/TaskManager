@@ -1,0 +1,54 @@
+﻿@model UserViewModel
+@{
+	ViewData["Title"] = "Users";
+}
+@if (Model != null && Model.TriedToDeleteUser)
+{
+	<div class="d-flex align-items-center justify-content-center">
+		<div class="alert alert-danger shadow-sm w-50 d-flex align-items-center justify-content-center" role="alert">
+			Sorry, you don't have permission to delete users ¯\_(ツ)_/¯
+		</div>
+	</div>
+}
+<h1>Users</h1>
+<table class="table table-borderless table-striped mt-5 bg-white">
+	<thead>
+		<tr>
+			<th scope="row">
+				@Html.DisplayNameFor(model => model.ID)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.FullName)
+			</th>
+			<th scope="col">
+				@Html.DisplayNameFor(model => model.Email)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var user in Model.Users)
+		{
+			<tr>
+				<th scope="row">@user.Id.Substring(0, 8)</th>
+				<td>
+					@Html.DisplayFor(modelItem => user.UserName)
+					</td>
+				<td>
+					@Html.DisplayFor(modelItem => user.Email)
+					</td>
+				<td class="d-flex flex-wrap">
+					@if (User.IsInRole("Admin"))
+					{
+						<a class="btn btn-outline-danger ms-1" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+					}
+					else
+					{
+						<a class="btn btn-outline-danger ms-1" asp-action="Index" asp-route-deleteButtonPressed=@true >Delete</a>
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+

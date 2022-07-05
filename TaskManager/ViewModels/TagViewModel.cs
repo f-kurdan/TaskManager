@@ -17,7 +17,7 @@ namespace TaskManager.ViewModels
 			ErrorMessage = "Title must be from 3 to 20 characters long and contain latin letters and numbers")]
 		public string Title { get; set; }
 
-		public DateTime? Created { get; set; }
+		public DateTime Created { get; set; }
 
 		public List<Tag> Tags { get; set; }
 	}
