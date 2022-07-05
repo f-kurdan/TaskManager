@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Data;
 using TaskManager.Models;
@@ -37,7 +38,11 @@ namespace TaskManager.Controllers
             {
                 Statuses = statuses,
                 Performers = performers,
-                Tags = tags
+                TagSelectList = tags.Select(t => new SelectListItem
+                {
+                    Text = t.Title,
+                    Value = t.ID.ToString()
+                }).AsQueryable()
             };
             return View(vm);
         }
@@ -46,6 +51,12 @@ namespace TaskManager.Controllers
         [Authorize]
         public async Task<IActionResult> Create(TaskViewModel vm)
         {
+            var tags = new List<Tag>();
+            if (vm.TagIDs != null)
+                tags = _context.Tags
+                    .Where(t => vm.TagIDs.Contains(t.ID))
+                    .ToList();
+
             var task = new Models.Task
             {
                 Title = vm.Title,
@@ -54,7 +65,7 @@ namespace TaskManager.Controllers
                 Created = DateTime.Now,
                 Description = vm.Description,
                 Status = vm.Status,
-                Tags = vm.Tags
+                Tags = tags
             };
 
             _context.Tasks.Add(task);
@@ -67,7 +78,10 @@ namespace TaskManager.Controllers
         {
             if (id == null) return NotFound();
 
-            var task = await _context.Tasks.FindAsync(id);
+            var task = _context.Tasks
+                .Include(t => t.Tags)
+                .Where(i => i.ID == id)
+                .Single();
             if (task == null) return NotFound();
 
             var vm = new TaskViewModel
@@ -90,7 +104,9 @@ namespace TaskManager.Controllers
         {
             if (id == null) return NotFound();
 
-            var task = await _context.Tasks.FindAsync(id);
+            var task = _context.Tasks
+                .Include(task => task.Tags)
+                .FirstOrDefault(t => t.ID == id);
             if (task == null) return NotFound();
 
             _context.Tasks.Remove(task);
@@ -103,7 +119,6 @@ namespace TaskManager.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-
             if (id == null) return NotFound();
 
             var task = await _context.Tasks.FindAsync(id);
@@ -116,7 +131,6 @@ namespace TaskManager.Controllers
             var tags = _context.Tags.AsNoTracking().ToList();
             var statuses = _context.Statuses.AsNoTracking().ToList();
 
-
             var vm = new TaskViewModel
             {
                 ID = task.ID,
@@ -126,7 +140,11 @@ namespace TaskManager.Controllers
                 Author = task.Author,
                 Performer = task.Performer,
                 CreationDate = task.Created,
-                Tags = tags,
+                TagSelectList = tags.Select(t => new SelectListItem
+                {
+                    Text = t.Title,
+                    Value = t.ID.ToString()
+                }).AsQueryable(),
                 Statuses = statuses,
                 Performers = performers,
             };
@@ -138,6 +156,12 @@ namespace TaskManager.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(TaskViewModel vm)
         {
+            var tags = new List<Tag>();
+            if (vm.TagIDs != null)
+                tags = _context.Tags
+                    .Where(t => vm.TagIDs.Contains(t.ID))
+                    .ToList();
+
             var task = new Models.Task
             {
                 ID = vm.ID,
@@ -147,10 +171,10 @@ namespace TaskManager.Controllers
                 Created = vm.CreationDate,
                 Description = vm.Description,
                 Status = vm.Status,
-                Tags = vm.Tags
+                Tags = tags
             };
 
-            _context.Tasks.Update(task);
+            _context.Update(task);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new { id = task.ID });

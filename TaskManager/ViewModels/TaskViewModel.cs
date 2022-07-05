@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TaskManager.Models;
 
 namespace TaskManager.ViewModels
@@ -35,6 +36,10 @@ namespace TaskManager.ViewModels
         public List<Models.Task> Tasks { get; set; }
 
         public List<string> Performers { get; set; }
+
+        public IEnumerable<SelectListItem> TagSelectList { get; set; }
+
+        public List<int> TagIDs { get; set; }
 
         public List<Tag> Tags { get; set; }
     }

@@ -16,6 +16,10 @@ namespace TaskManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<Models.Task>()
+            //   .HasMany<Tag>(c => c.Tags)
+            //   .WithOptional(x => x)
+            //   .WillCascadeOnDelete(true);
             base.OnModelCreating(modelBuilder);
         }
     }

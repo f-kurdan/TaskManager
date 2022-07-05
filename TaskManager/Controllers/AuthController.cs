@@ -78,8 +78,6 @@ namespace TaskManager.Controllers
             return View(vm);
         }
 
-        public IActionResult EmailVerification() => View();
-
         public async Task<IActionResult> VerifyEmail(string userId, string token)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -87,12 +85,9 @@ namespace TaskManager.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
-                return View();
+                return RedirectToAction(nameof(Login));
             return BadRequest();
         }
-
-        [HttpGet]
-        public IActionResult ForgetPassword() => View();
 
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(ForgetViewModel vm)
@@ -114,8 +109,6 @@ namespace TaskManager.Controllers
             vm.IsUserVerified = false;
             return (View(vm));
         }
-
-        public IActionResult ForgetPasswordConfirmation() => View();
 
         [HttpGet]
         public IActionResult ResetPassword(string userId, string token)

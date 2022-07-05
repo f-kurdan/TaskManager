@@ -58,7 +58,8 @@ using (var scope = app.Services.CreateScope())
 	var userMgr = services.GetRequiredService<UserManager<IdentityUser>>();
 	var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-	context.Database.EnsureCreated();
+    //context.Database.EnsureDeleted();
+    context.Database.EnsureCreated();
 
 	var adminRole = new IdentityRole("Admin");
 	if (!context.Roles.Any())
