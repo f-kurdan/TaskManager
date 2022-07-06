@@ -2,7 +2,7 @@
 
 namespace TaskManager.Models
 {
-    public class Status
+    public class Status : IModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }

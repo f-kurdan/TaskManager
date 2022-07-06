@@ -6,12 +6,64 @@
 <h1>Tasks</h1>
 @if (User.Identity.IsAuthenticated)
 {
-	<a class="btn btn-outline-primary" asp-controller="Task" asp-action="Create">Create new task</a>
+	<a class="btn btn-outline-primary shadow-sm mb-3" asp-controller="Task" asp-action="Create">Create new task</a>
 }
 else
 {
-	<a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Create new status</a>
+	<a class="btn btn-outline-primary shadow-sm mb-3" asp-controller="Auth" asp-action="Login">Create new status</a>
 }
+
+<div class="card shadow-sm">
+	<div class="card-body p-4">
+		<form asp-action="Index" method="get">
+			<div class="row">
+				<div class="col-12 col-md">
+					<div class="input-group mb-3">
+						<label class="input-group-text" asp-for="Performer">Performer</label>
+						<select asp-for="Performer" class="form-select">
+							<option></option>
+							@foreach (var performer in Model.Performers)
+							{
+								<option>@performer</option>
+							}
+						</select>
+					</div>
+				</div>
+				<div class="col-12 col-md">
+					<div class="input-group mb-3">
+						<label class="input-group-text" asp-for="Status">Status</label>
+						<select asp-for="Status" class="form-select">
+							<option></option>
+							@foreach (var status in Model.Statuses)
+							{
+								<option>@status.Title</option>
+							}
+						</select>
+					</div>
+				</div>
+				<div class="col-12 col-md">
+					<div class="input-group mb-3">
+						<label class="input-group-text" asp-for="Tag">Tag</label>
+						<select asp-for="Tag" class="form-select">
+							<option></option>
+							@foreach (var tag in Model.Tags)
+							{
+								<option>@tag.Title</option>
+							}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="mb-3 form-check">
+				<input class="form-check-input" type="checkbox" asp-for="OnlyCurrentUsersTasks" />
+				<label class="form-check-label" asp-for="OnlyCurrentUsersTasks">
+					Show only my tasks
+				</label>
+			</div>
+			<input class="btn btn-primary" type="submit" value="Show" />
+		</form>
+	</div>
+</div>
 <table class="table table-borderless table-striped mt-5 bg-white">
 	<thead>
 		<tr>
@@ -42,30 +94,35 @@ else
 				<th scope="row">@task.ID</th>
 				<td>
 					@Html.DisplayFor(modelItem => task.Title)
-					</td>
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => task.Status)
-					</td>
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => task.Author)
-					</td>
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => task.Performer)
-					</td>
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => task.Created)
-					</td>
+				</td>
 				<td class="d-flex flex-wrap">
-					<a asp-action="Details" asp-route-id="@task.ID" class="btn btn-outline-info mx-1">Details</a>
+					<a asp-action="Details" asp-route-id="@task.ID"
+				   class="btn btn-outline-info shadow-sm mx-1">Details</a>
 					@if (User.Identity.IsAuthenticated)
 					{
-						<a class="btn btn-outline-primary mx-1" asp-action="Edit" asp-route-id="@task.ID">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-action="Delete" asp-route-id="@task.ID">Delete</a>
+						<a class="btn btn-outline-primary shadow-sm mx-1" asp-action="Edit"
+				   asp-route-id="@task.ID">Edit</a>
+						<a class="btn btn-outline-danger shadow-sm ms-1" asp-action="Delete"
+				   asp-route-id="@task.ID">Delete</a>
 					}
 					else
 					{
-						<a class="btn btn-outline-primary mx-1" asp-controller="Auth" asp-action="Login">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-controller="Auth" asp-action="Login">Delete</a>
+						<a class="btn btn-outline-primary shadow-sm mx-1" asp-controller="Auth"
+				   asp-action="Login">Edit</a>
+						<a class="btn btn-outline-danger shadow-sm ms-1" asp-controller="Auth"
+				   asp-action="Login">Delete</a>
 					}
 				</td>
 			</tr>

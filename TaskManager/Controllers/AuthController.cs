@@ -89,6 +89,9 @@ namespace TaskManager.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        public IActionResult ForgetPassword() => View();
+
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(ForgetViewModel vm)
         {

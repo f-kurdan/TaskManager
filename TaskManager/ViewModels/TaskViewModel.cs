@@ -13,19 +13,18 @@ namespace TaskManager.ViewModels
             ErrorMessage = "Title must be from 3 to 20 characters long and contain latin letters and numbers")]
         public string Title { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
-        [Required]
         public string Status { get; set; }
 
-        [Required]
+        public string Tag { get; set; }
+
         public string Author { get; set; }
 
-        [Required]
         public string Performer { get; set; }
 
-        [Required]
+        public bool OnlyCurrentUsersTasks { get; set; }
+
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
         ApplyFormatInEditMode = true)]

@@ -1,17 +1,15 @@
 ﻿@model TagViewModel
-
 @{
 	ViewData["Title"] = "Statuses";
 }
-
 <h1>Tags</h1>
 @if (User.Identity.IsAuthenticated)
 {
-	<a class="btn btn-outline-primary" asp-controller="Tag" asp-action="Create">Create new tag</a>
+	<a class="btn btn-outline-primary shadow-sm" asp-controller="Tag" asp-action="Create">Create new tag</a>
 }
 else
 {
-	<a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Create new tag</a>
+	<a class="btn btn-outline-primary shadow-sm" asp-controller="Auth" asp-action="Login">Create new tag</a>
 }
 <table class="table table-borderless table-striped mt-5 bg-white">
 	<thead>
@@ -41,13 +39,17 @@ else
 				<td class="d-flex flex-wrap">
 					@if (User.Identity.IsAuthenticated)
 					{
-						<a class="btn btn-outline-primary me-1" asp-action="Edit" asp-route-id="@tag.ID">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-action="Delete" asp-route-id="@tag.ID">Delete</a>
+						<a class="btn btn-outline-primary shadow-sm me-1" asp-action="Edit"
+				   asp-route-id="@tag.ID">Edit</a>
+						<a class="btn btn-outline-danger shadow-sm ms-1" asp-action="Delete"
+				   asp-route-id="@tag.ID">Delete</a>
 					}
 					else
 					{
-						<a class="btn btn-outline-primary mx-1" asp-controller="Auth" asp-action="Login">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-controller="Auth" asp-action="Login">Delete</a>
+						<a class="btn btn-outline-primary shadow-sm mx-1" asp-controller="Auth"
+				   asp-action="Login">Edit</a>
+						<a class="btn btn-outline-danger shadow-sm ms-1" asp-controller="Auth"
+				   asp-action="Login">Delete</a>
 					}
 				</td>
 			</tr>

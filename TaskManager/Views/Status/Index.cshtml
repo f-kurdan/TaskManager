@@ -7,11 +7,11 @@
 <h1>Statuses</h1>
 @if (User.Identity.IsAuthenticated)
 {
-	<a class="btn btn-outline-primary" asp-controller="Status" asp-action="Create">Create new status</a>
+	<a class="btn btn-outline-primary shadow-sm" asp-controller="Status" asp-action="Create">Create new status</a>
 }
 else
 {
-	<a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Create new status</a>
+	<a class="btn btn-outline-primary shadow-sm" asp-controller="Auth" asp-action="Login">Create new status</a>
 }
 <table class="table table-borderless table-striped mt-5 bg-white">
 	<thead>
@@ -41,13 +41,17 @@ else
 				<td class="d-flex flex-wrap">
 					@if (User.Identity.IsAuthenticated)
 					{
-						<a class="btn btn-outline-primary me-1" asp-action="Edit" asp-route-id="@status.ID">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-action="Delete" asp-route-id="@status.ID">Delete</a>
+						<a class="btn btn-outline-primary me-1 shadow-sm" asp-action="Edit"
+				   asp-route-id="@status.ID">Edit</a>
+						<a class="btn btn-outline-danger ms-1 shadow-sm" asp-action="Delete"
+				   asp-route-id="@status.ID">Delete</a>
 					}
 					else
 					{
-						<a class="btn btn-outline-primary mx-1" asp-controller="Auth" asp-action="Login">Edit</a>
-						<a class="btn btn-outline-danger ms-1" asp-controller="Auth" asp-action="Login">Delete</a>
+						<a class="btn btn-outline-primary mx-1 shadow-sm" asp-controller="Auth"
+				   asp-action="Login">Edit</a>
+						<a class="btn btn-outline-danger ms-1 shadow-sm" asp-controller="Auth"
+				   asp-action="Login">Delete</a>
 					}
 				</td>
 			</tr>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +19,36 @@ namespace TaskManager.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(TaskViewModel vm)
         {
-            var tasks = await _context.Tasks.AsNoTracking().ToListAsync();
-            return View(new TaskViewModel { Tasks = tasks });
+            
+            var performers = await _context.Users
+                    .AsNoTracking()
+                    .Select(u => u.ToString())
+                    .ToListAsync();
+            var tags = await _context.Tags.AsNoTracking().ToListAsync();
+            var statuses = await _context.Statuses.AsNoTracking().ToListAsync();
+            var tasks = _context.Tasks.Include(t => t.Tags).AsNoTracking();
+
+            if (vm.Performer != null)
+                tasks = tasks
+                    .Where(t => t.Performer == vm.Performer);
+            if (vm.Status != null)
+                tasks = tasks
+                    .Where(t => t.Status == vm.Status);
+            if (vm.Tag != null)
+                tasks = tasks
+                    .Where(t => t.Tags.Any(t => t.Title == vm.Tag));
+            if (vm.OnlyCurrentUsersTasks)
+                tasks = tasks
+                    .Where(t => t.Performer == HttpContext.User.Identity.Name);
+
+            return View(new TaskViewModel { 
+                Tasks = tasks.ToList(),
+                Performers = performers,
+                Statuses = statuses,
+                Tags = tags
+            });
         }
 
         [HttpGet]

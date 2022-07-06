@@ -26,9 +26,9 @@ namespace TaskManager.Controllers
         [HttpGet]
         public IActionResult Create() => View();
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(StatusViewModel vm)
         {
             var status = new Status
@@ -43,8 +43,8 @@ namespace TaskManager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -62,9 +62,9 @@ namespace TaskManager.Controllers
             return View(vm);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(StatusViewModel vm)
         {
             var status = new Status

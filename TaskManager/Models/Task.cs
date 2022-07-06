@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TaskManager.Models
 {
-    public class Task
+    public class Task : IModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
