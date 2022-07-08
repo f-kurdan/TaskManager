@@ -21,27 +21,13 @@ namespace TaskManager.Controllers
 
         public async Task<IActionResult> Index(TaskViewModel vm)
         {
-            
             var performers = await _context.Users
                     .AsNoTracking()
                     .Select(u => u.ToString())
                     .ToListAsync();
             var tags = await _context.Tags.AsNoTracking().ToListAsync();
             var statuses = await _context.Statuses.AsNoTracking().ToListAsync();
-            var tasks = _context.Tasks.Include(t => t.Tags).AsNoTracking();
-
-            if (vm.Performer != null)
-                tasks = tasks
-                    .Where(t => t.Performer == vm.Performer);
-            if (vm.Status != null)
-                tasks = tasks
-                    .Where(t => t.Status == vm.Status);
-            if (vm.Tag != null)
-                tasks = tasks
-                    .Where(t => t.Tags.Any(t => t.Title == vm.Tag));
-            if (vm.OnlyCurrentUsersTasks)
-                tasks = tasks
-                    .Where(t => t.Performer == HttpContext.User.Identity.Name);
+            var tasks = GetFilteredTasksList(vm);            
 
             return View(new TaskViewModel { 
                 Tasks = tasks.ToList(),
@@ -206,6 +192,24 @@ namespace TaskManager.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new { id = task.ID });
+        }
+
+        private IQueryable<Models.Task> GetFilteredTasksList(TaskViewModel vm)
+        {
+            var tasks = _context.Tasks.Include(t => t.Tags).AsNoTracking();
+            if (vm.Performer != null)
+                tasks = tasks
+                    .Where(t => t.Performer == vm.Performer);
+            if (vm.Status != null)
+                tasks = tasks
+                    .Where(t => t.Status == vm.Status);
+            if (vm.Tag != null)
+                tasks = tasks
+                    .Where(t => t.Tags.Any(t => t.Title == vm.Tag));
+            if (vm.OnlyCurrentUsersTasks)
+                tasks = tasks
+                    .Where(t => t.Performer == HttpContext.User.Identity.Name);
+            return tasks;
         }
     }
 }
