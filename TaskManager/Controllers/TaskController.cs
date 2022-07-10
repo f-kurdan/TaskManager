@@ -27,9 +27,10 @@ namespace TaskManager.Controllers
                     .ToListAsync();
             var tags = await _context.Tags.AsNoTracking().ToListAsync();
             var statuses = await _context.Statuses.AsNoTracking().ToListAsync();
-            var tasks = GetFilteredTasksList(vm);            
+            var tasks = GetFilteredTasksList(vm);
 
-            return View(new TaskViewModel { 
+            return View(new TaskViewModel
+            {
                 Tasks = tasks.ToList(),
                 Performers = performers,
                 Statuses = statuses,
@@ -92,10 +93,10 @@ namespace TaskManager.Controllers
         {
             if (id == null) return NotFound();
 
-            var task = _context.Tasks
+            var task = await _context.Tasks
                 .Include(t => t.Tags)
                 .Where(i => i.ID == id)
-                .Single();
+                .SingleAsync();
             if (task == null) return NotFound();
 
             var vm = new TaskViewModel
@@ -188,6 +189,10 @@ namespace TaskManager.Controllers
                 Tags = tags
             };
 
+            foreach (var tag in _context.Tags.Where(t => t.TaskID == task.ID))
+            {
+                tag.TaskID = null;
+            }
             _context.Update(task);
             await _context.SaveChangesAsync();
 
@@ -205,7 +210,7 @@ namespace TaskManager.Controllers
                     .Where(t => t.Status == vm.Status);
             if (vm.Tag != null)
                 tasks = tasks
-                    .Where(t => t.Tags.Any(t => t.Title == vm.Tag));
+                    .Where(task => task.Tags.Any(tag => tag.Title == vm.Tag));
             if (vm.OnlyCurrentUsersTasks)
                 tasks = tasks
                     .Where(t => t.Performer == HttpContext.User.Identity.Name);
