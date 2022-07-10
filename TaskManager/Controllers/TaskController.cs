@@ -193,6 +193,7 @@ namespace TaskManager.Controllers
             {
                 tag.TaskID = null;
             }
+
             _context.Update(task);
             await _context.SaveChangesAsync();
 
