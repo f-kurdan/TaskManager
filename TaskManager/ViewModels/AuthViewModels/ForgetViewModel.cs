@@ -8,8 +8,10 @@ namespace TaskManager.ViewModels.AuthViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        public bool IsEmailSend { get; set; } = false;
+        //public bool IsEmailSend { get; set; } = false;
 
         public bool IsUserVerified { get; set; } = true;
+
+        public string EmailResetLink { get; set; }
     }
 }

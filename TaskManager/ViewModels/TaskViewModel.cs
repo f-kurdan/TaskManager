@@ -23,12 +23,14 @@ namespace TaskManager.ViewModels
 
         public string Performer { get; set; }
 
-        public bool OnlyCurrentUsersTasks { get; set; }
-
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
         ApplyFormatInEditMode = true)]
         public DateTime CreationDate { get; set; }
+
+        #region Collections
+
+        public bool OnlyCurrentUsersTasks { get; set; }
 
         public List<Status> Statuses { get; set; }
 
@@ -41,5 +43,7 @@ namespace TaskManager.ViewModels
         public List<int> TagIDs { get; set; }
 
         public List<Tag> Tags { get; set; }
+
+        #endregion
     }
 }

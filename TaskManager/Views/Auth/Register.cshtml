@@ -2,11 +2,11 @@
 @{
 	ViewBag.Title = "Register";
 }
-@if (Model != null && Model.IsEmailSent == true)
+@if (Model != null && Model.IsEmailConfirmed == true)
 {
 	<div class="d-flex align-items-center justify-content-center">
 		<div class="alert alert-success shadow-sm w-50 d-flex align-items-center justify-content-center" role="alert">
-			Email has been sent. Please verify it:)
+			<a href="@Model.ConfirmationString">Click on this link to verify email:)<a>
 		</div>
 	</div>
 }

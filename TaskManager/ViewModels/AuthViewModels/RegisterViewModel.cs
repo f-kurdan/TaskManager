@@ -23,6 +23,8 @@ namespace TaskManager.ViewModels.AuthViewModels
         [Compare("Password", ErrorMessage = "Passwords don't match")]
         public string ConfirmPassword { get; set; }
 
-        public bool IsEmailSent { get; set; } = false;
+        public bool IsEmailConfirmed { get; set; } = false;
+
+        public string ConfirmationString { get; set; } = string.Empty;
     }
 }

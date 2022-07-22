@@ -1,4 +1,3 @@
-using System.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NETCore.MailKit.Extensions;

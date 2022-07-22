@@ -2,7 +2,7 @@
 
 namespace TaskManager.Models
 {
-    public class Tag : IModel
+    public class Tag
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }

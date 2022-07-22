@@ -13,8 +13,9 @@ namespace TaskManager.ViewModels.AuthViewModels
 
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords don't match.")]
+        [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
 
-        public bool IsPasswordReset { get; set; } = false;
+        public bool IsPasswordReset { get; set; } 
     }
 }

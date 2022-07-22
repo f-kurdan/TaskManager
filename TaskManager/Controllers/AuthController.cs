@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -70,10 +71,10 @@ namespace TaskManager.Controllers
             {
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callback = Url.Action(nameof(VerifyEmail), "Auth", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
-
-                await _emailService.SendAsync("test@test.com", "email verification",
-                    $"<a href=\"{callback}\">Click on this link to verify email<a>", true);
-                vm.IsEmailSent = true;
+                //await _emailService.SendAsync(vm.Email, "email verification",
+                //    $"<a href=\"{callback}\">Click on this link to verify email<a>", true);
+                vm.IsEmailConfirmed = true;
+                vm.ConfirmationString = callback;
             }
             return View(vm);
         }
@@ -95,18 +96,19 @@ namespace TaskManager.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgetPassword(ForgetViewModel vm)
         {
-            if (!ModelState.IsValid) return View(vm);
-
             var user = await _userManager.FindByEmailAsync(vm.Email);
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callback = Url.Action(nameof(ResetPassword), "Auth", new { userId = user.Id, token }, Request.Scheme, Request.Host.ToString());
 
-                await _emailService.SendAsync("test@test.com", "Password reset",
-                    $"<a href=\"{callback}\">Click on this link to create new password<a>", true);
 
-                vm.IsEmailSend = true;
+                //await _emailService.SendAsync(vm.Email, "Password reset",
+                //    $"<a href=\"{callback}\">Click on this link to create new password<a>", true);
+
+                //vm.IsEmailSend = true;
+                vm.EmailResetLink = callback;
+                vm.Email = null;
                 return View(vm);
             }
             vm.IsUserVerified = false;
@@ -116,13 +118,15 @@ namespace TaskManager.Controllers
         [HttpGet]
         public IActionResult ResetPassword(string userId, string token)
         {
-            var model = new ResetViewModel { UserID = userId, Token = token };
-            return View(model);
+            var vm = new ResetViewModel { UserID = userId, Token = token };
+            return View(vm);
         }
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetViewModel vm)
         {
+            if (!ModelState.IsValid) return View();
+
             var user = await _userManager.FindByIdAsync(vm.UserID);
             if (user == null)
                 return BadRequest();
@@ -136,10 +140,9 @@ namespace TaskManager.Controllers
                 }
                 return View();
             }
+
             vm.IsPasswordReset = true;
             return View(vm);
         }
-
-        public IActionResult ResetPasswordConfirmation() => View();
     }
 }

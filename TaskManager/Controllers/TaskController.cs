@@ -59,6 +59,7 @@ namespace TaskManager.Controllers
                     Value = t.ID.ToString()
                 }).AsQueryable()
             };
+
             return View(vm);
         }
 
@@ -211,7 +212,7 @@ namespace TaskManager.Controllers
                     .Where(t => t.Status == vm.Status);
             if (vm.Tag != null)
                 tasks = tasks
-                    .Where(task => task.Tags.Any(tag => tag.Title == vm.Tag));
+                    .Where(task => task.Tags!= null && task.Tags.Any(tag => tag.Title == vm.Tag));
             if (vm.OnlyCurrentUsersTasks)
                 tasks = tasks
                     .Where(t => t.Performer == HttpContext.User.Identity.Name);
